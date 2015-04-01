@@ -1,9 +1,13 @@
-<%= form_for @post do |f| %>
-<%= f.label :description %>
-<%= f.text_field :description %>
-<%= f.submit %>
-<% end %>
+<b>Posts</b>
 
-<% @posts.each do |post| %>
-  <li><%= post.description %></li>
+<ul id="posts">
+<%= render @posts %>
+</ul>
+
+<br>
+
+<%= form_for(@post, remote: true) do |f| %>
+  <%= f.label :name %><br>
+  <%= f.text_field :description %>
+  <%= f.submit %>
 <% end %>

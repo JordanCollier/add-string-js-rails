@@ -6,11 +6,19 @@ class PostsController < ApplicationController
   end
 
   def create
-    @post = Post.new(post_params)
+  @post = Post.new(post_params)
+
+  respond_to do |format|
     if @post.save
-      redirect_to :back
+      format.html { redirect_to @post, notice: 'User was successfully created.' }
+      format.js   {}
+      format.json { render json: @post, status: :created, location: @post }
+    else
+      format.html { render action: "new" }
+      format.json { render json: @post.errors, status: :unprocessable_entity }
     end
   end
+end
 
 
 private
