@@ -1,1 +1,11 @@
-<li><%= post.description %></li>
+<tr>
+  <td>
+    <%= post.description %>
+  </td>
+  <td>
+    <%= link_to image_tag('images.jpeg', width:"25", height:"25"), like_post_path(post), method: :post, remote: true %>
+  </td>
+  <td id="like-<%= post.id %>">
+    <%= post.likes %>
+  </td>
+</tr>
