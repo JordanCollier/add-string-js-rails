@@ -6,17 +6,29 @@ class PostsController < ApplicationController
   end
 
   def create
-  @post = Post.new(post_params)
+     @post = Post.new(post_params)
+     @post.update_attribute(:likes, 0)
+
+     respond_to do |format|
+       if @post.save
+         format.html { redirect_to @post, notice: 'Post was successfully created.' }
+         format.js   {}
+         format.json { render json: @post, status: :created, location: @post }
+       else
+         format.html { render action: "new" }
+         format.json { render json: @post.errors, status: :unprocessable_entity }
+       end
+     end
+   end
+
+def like
+  @post = Post.find(params[:id])
+  @post.likes += 1
+  @post.save
 
   respond_to do |format|
-    if @post.save
-      format.html { redirect_to @post, notice: 'User was successfully created.' }
       format.js   {}
       format.json { render json: @post, status: :created, location: @post }
-    else
-      format.html { render action: "new" }
-      format.json { render json: @post.errors, status: :unprocessable_entity }
-    end
   end
 end
 
@@ -24,7 +36,7 @@ end
 private
 
   def post_params
-    params.require(:post).permit(:description)
+    params.require(:post).permit(:description, :likes)
   end
 
 end
